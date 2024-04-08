@@ -12,7 +12,10 @@ import { useState } from 'react'
 import Logo from '@/components/Logo'
 
 const formSchema = z.object({
-  username: z.string().email({ message: 'Ingresa un correo válido.' }),
+  username: z.string().min(4, {
+    message: 'El nombre de usuario debe tener al menos 4 caracteres.'
+  }),
+  email: z.string().email({ message: 'Ingresa un correo válido.' }),
   password: z.string().min(6, {
     message: 'La contraseña debe tener al menos 6 caracteres.'
   }),
@@ -29,14 +32,16 @@ export default function UserRegisterForm (): JSX.Element {
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: '',
-      password: ''
+      email: '',
+      password: '',
+      confirmPassword: ''
     }
   })
 
   function onSubmit (values: z.infer<typeof formSchema>): void {
     setIsLoading(true)
     console.log(values)
-    // magia de nextauth
+
     setIsLoading(false)
   }
 
@@ -61,6 +66,19 @@ export default function UserRegisterForm (): JSX.Element {
               <FormField
                 control={form.control}
                 name='username'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='dark:text-white'>Nombre de usuario</FormLabel>
+                    <FormControl>
+                      <Input placeholder='username' {...field} />
+                    </FormControl>
+                    <FormMessage className='dark:text-red-400/80' />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='email'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='dark:text-white'>Correo</FormLabel>
