@@ -1,25 +1,46 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Icons } from '@/components/icons'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { useForm } from 'react-hook-form'
 import { useState } from 'react'
+import Logo from '@/components/Logo'
+
+const formSchema = z.object({
+  username: z.string().email({ message: 'Ingresa un correo válido.' }),
+  password: z.string().min(6, {
+    message: 'La contraseña debe tener al menos 6 caracteres.'
+  })
+})
 
 export default function UserLoginForm (): JSX.Element {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-  function handleSubmit (event: React.SyntheticEvent): void {
-    event.preventDefault()
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: '',
+      password: ''
+    }
+  })
+
+  function onSubmit (values: z.infer<typeof formSchema>): void {
     setIsLoading(true)
-
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
+    console.log(values)
+    // magia de nextauth
+    setIsLoading(false)
   }
 
   return (
     <div className='lg:p-8'>
+      <div className='mx-auto my-4 lg:hidden flex justify-center'>
+        <Logo className='w-32 h-32' />
+      </div>
       <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]'>
         <div className='flex flex-col space-y-2 text-center'>
           <h1 className='text-2xl font-semibold tracking-tight'>
@@ -31,46 +52,42 @@ export default function UserLoginForm (): JSX.Element {
         </div>
 
         <div className='grid gap-6'>
-          <form onSubmit={handleSubmit}>
-            <div className='grid gap-2'>
-              <div className='grid gap-1'>
-                <Label className='sr-only' htmlFor='email'>
-                  Email
-                </Label>
-                <Input
-                  id='email'
-                  placeholder='name@example.com'
-                  type='email'
-                  autoCapitalize='none'
-                  autoComplete='email'
-                  autoCorrect='off'
-                  disabled={isLoading}
-                />
-              </div>
-
-              <div className='grid gap-1'>
-                <Label className='sr-only' htmlFor='password'>
-                  Password
-                </Label>
-                <Input
-                  id='password'
-                  placeholder='Contraseña'
-                  type='password'
-                  autoCapitalize='none'
-                  autoComplete='current-password'
-                  autoCorrect='off'
-                  disabled={isLoading}
-                />
-              </div>
-
-              <Button className='mt-4' disabled={isLoading}>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+              <FormField
+                control={form.control}
+                name='username'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='dark:text-white'>Correo</FormLabel>
+                    <FormControl>
+                      <Input placeholder='user@example.com' {...field} />
+                    </FormControl>
+                    <FormMessage className='dark:text-red-400/80' />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='password'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='dark:text-white'>Contraseña</FormLabel>
+                    <FormControl>
+                      <Input type='password' placeholder='********' {...field} />
+                    </FormControl>
+                    <FormMessage className='dark:text-red-400/80' />
+                  </FormItem>
+                )}
+              />
+              <Button className='mt-5' disabled={isLoading}>
                 {isLoading && (
                   <Icons.Spinner className='mr-2 h-4 w-4 animate-spin' />
                 )}
                 Iniciar sesión
               </Button>
-            </div>
-          </form>
+            </form>
+          </Form>
         </div>
       </div>
     </div>

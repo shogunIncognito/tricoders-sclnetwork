@@ -22,7 +22,7 @@ export default function AuthenticationPage ({ children }: { children: React.Reac
   }, [])
 
   return (
-    <div className='container relative min-h-screen hidden h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0'>
+    <div className='container relative min-h-screen h-[800px] flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0'>
       <Link
         href={path === '/auth/signin' ? '/auth/signup' : '/auth/signin'}
         className={cn(
