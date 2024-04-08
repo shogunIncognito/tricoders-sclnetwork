@@ -19,10 +19,10 @@ export default function Home (): JSX.Element {
           </nav>
 
           <div className='flex items-center space-x-4'>
-            <Link href='#'>
+            <Link href='/auth/signup'>
               <Button>Regístrate</Button>
             </Link>
-            <Link href='#'>
+            <Link href='/auth/signin'>
               <Button>Inicia sesión</Button>
             </Link>
           </div>
