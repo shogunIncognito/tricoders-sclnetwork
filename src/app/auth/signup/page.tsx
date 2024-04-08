@@ -97,7 +97,7 @@ export default function UserRegisterForm (): JSX.Element {
                   </FormItem>
                 )}
               />
-              <Button className='mt-5' disabled={isLoading}>
+              <Button className='mt-5 w-full' disabled={isLoading}>
                 {isLoading && (
                   <Icons.Spinner className='mr-2 h-4 w-4 animate-spin' />
                 )}
