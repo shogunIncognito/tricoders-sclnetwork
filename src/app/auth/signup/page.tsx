@@ -10,6 +10,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 import Logo from '@/components/Logo'
+import { signUp } from '@/services/api'
+import { toast } from 'sonner'
 
 const formSchema = z.object({
   username: z.string().min(4, {
@@ -41,8 +43,13 @@ export default function UserRegisterForm (): JSX.Element {
   function onSubmit (values: z.infer<typeof formSchema>): void {
     setIsLoading(true)
     console.log(values)
-
-    setIsLoading(false)
+    signUp(values)
+      .then(() => toast.success('Cuenta creada correctamente'))
+      .catch((error) => {
+        console.error(error)
+        toast.error('Error al crear la cuenta')
+      })
+      .finally(() => setIsLoading(false))
   }
 
   return (
