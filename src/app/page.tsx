@@ -13,9 +13,7 @@ export default function Home (): JSX.Element {
       <header className='flex-1'>
         <div className='container flex md:flex-row flex-col items-center justify-between h-[134px] px-4 md:px-6'>
           <nav className='flex items-center space-x-4'>
-            <Link className='flex items-center space-x-2 font-bold' href='/'>
-              <Logo className='w-28' />
-            </Link>
+            <Logo className='w-28' />
           </nav>
 
           <div className='flex items-center space-x-4'>

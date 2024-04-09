@@ -10,6 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 import Logo from '@/components/Logo'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
   username: z.string().email({ message: 'Ingresa un correo válido.' }),
@@ -20,6 +21,7 @@ const formSchema = z.object({
 
 export default function UserLoginForm (): JSX.Element {
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -32,8 +34,10 @@ export default function UserLoginForm (): JSX.Element {
   function onSubmit (values: z.infer<typeof formSchema>): void {
     setIsLoading(true)
     console.log(values)
-    // magia de nextauth
-    setIsLoading(false)
+    setTimeout(() => {
+      setIsLoading(false)
+      router.replace('/dash')
+    }, 500)
   }
 
   return (
