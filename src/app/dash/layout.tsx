@@ -1,51 +1,63 @@
+'use client'
+
 import Logo from '@/components/Logo'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { BookMarked, HomeIcon, Package2Icon, SearchIcon, UserIcon } from 'lucide-react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+
+const routes = [
+  {
+    label: 'Inicio',
+    icon: HomeIcon,
+    href: '/dash'
+  },
+  {
+    label: 'Mis Publicaciones',
+    icon: BookMarked,
+    href: '/dash/myposts'
+  },
+  {
+    label: 'Perfil',
+    icon: UserIcon,
+    href: '/dash/profile'
+  }
+]
 
 export default function Home ({ children }: { children: React.ReactNode }): JSX.Element {
+  const path = usePathname()
+
   return (
-    <div className='h-screen w-full min-h-screen flex'>
+    <div className='h-screen w-full max-h-screen min-h-screen flex fixed'>
       <div className='hidden border-r border-gray-700 bg-gray-100/40 lg:block dark:bg-gray-800/40'>
         <div className='flex h-full flex-col gap-2'>
-          <div className='flex h-[60px] items-center justify-center border-b border-gray-700 px-6'>
+          <div className='flex h-[57px] items-center justify-center border-b border-gray-700 px-6 py-2'>
             <Logo className='h-10 w-10' />
             <span className=''>Tri-Coders</span>
           </div>
           <div className='flex-1 overflow-auto py-2'>
             <nav className='grid items-start px-4 text-sm font-medium'>
-              <Link
-                className='flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-3 text-gray-900  transition-all hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50'
-                href='#'
-              >
-                <HomeIcon className='h-4 w-4' />
-                Inicio
-              </Link>
-              <Link
-                className='flex items-center gap-3 rounded-lg px-3 py-3 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50'
-                href='#'
-              >
-                <BookMarked className='h-4 w-4' />
-                Mis Publicaciones
-              </Link>
-              <Link
-                className='flex items-center gap-3 rounded-lg px-3 py-3 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50'
-                href='#'
-              >
-                <UserIcon className='h-4 w-4' />
-                Perfil
-              </Link>
+              {routes.map(route => (
+                <Link
+                  key={route.label}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-3 transition-all ${path === route.href ? 'bg-gray-800' : ''} text-gray-50 hover:text-gray-300`}
+                  href={route.href}
+                >
+                  <route.icon className='h-4 w-4' />
+                  {route.label}
+                </Link>
+              ))}
             </nav>
           </div>
         </div>
       </div>
-      <div className='flex flex-col flex-1'>
+      <div className='flex flex-col flex-1 max-h-screen overflow-hidden'>
         <header className='flex h-20 lg:h-[60px] items-center gap-4 border-b border-gray-700 bg-gray-100/40 px-6 py-2 dark:bg-gray-800/40'>
           <Link className='lg:hidden' href='#'>
             <Package2Icon className='h-6 w-6' />
-            <span className='sr-only'>Home</span>
+            <span className='sr-only'>Inicio</span>
           </Link>
           <div className='w-full flex-1'>
             <form>
@@ -53,7 +65,7 @@ export default function Home ({ children }: { children: React.ReactNode }): JSX.
                 <SearchIcon className='absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400' />
                 <Input
                   className='w-full bg-white shadow-none appearance-none pl-8 md:w-2/3 lg:w-1/3 dark:bg-gray-950'
-                  placeholder='Search users...'
+                  placeholder='Buscar devs...'
                   type='search'
                 />
               </div>
@@ -81,16 +93,23 @@ export default function Home ({ children }: { children: React.ReactNode }): JSX.
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>Mi cuenta</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href='/dash/profile/settings'>
+                  Ajustes
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem>
+                Cerrar sesión
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
 
         {children}
+
       </div>
     </div>
   )

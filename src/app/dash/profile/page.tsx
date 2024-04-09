@@ -42,35 +42,35 @@ export default function page (): JSX.Element {
         <div className='grid items-start gap-4 text-sm'>
           <div className='flex items-center gap-2'>
             <UsersIcon className='h-4 w-4' />
-            <span className='font-semibold'>Followers</span>
-            <span className=''>1200</span>
+            <span className='font-semibold'>Seguidores</span>
+            <span>1200</span>
           </div>
           <div className='flex items-center gap-2'>
             <UsersIcon className='h-4 w-4' />
-            <span className='font-semibold'>Following</span>
-            <span className=''>520</span>
+            <span className='font-semibold'>Siguiendo</span>
+            <span>520</span>
           </div>
           <div className='flex items-center gap-2'>
             <FileTextIcon className='h-4 w-4' />
-            <span className='font-semibold'>Posts</span>
-            <span className=''>24</span>
+            <span className='font-semibold'>Publicaciones</span>
+            <span>24</span>
           </div>
         </div>
         <div className='grid items-start gap-2 text-sm'>
-          <h2 className='font-semibold text-lg'>Latest Posts</h2>
+          <h2 className='font-semibold text-lg'>Ultimas publicaciones</h2>
           <div className='flex flex-col gap-2'>
             <div className='flex items-start gap-2'>
               <img
                 alt='Post image'
                 className='aspect-square rounded-md object-cover'
                 height='64'
-                src='/placeholder.svg'
+                src='https://raw.githubusercontent.com/antonshell/placeholder-service/master/resources/test_images/img.png'
                 width='64'
               />
               <div className='flex flex-col gap-1'>
-                <p className='font-semibold'>New blog post!</p>
+                <p className='font-semibold'>Nuevo blog</p>
                 <p className='text-sm'>
-                  Check out my latest blog post on the importance of open-source software in today's world.
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
                 </p>
               </div>
             </div>
@@ -79,14 +79,13 @@ export default function page (): JSX.Element {
                 alt='Post image'
                 className='aspect-square rounded-md object-cover'
                 height='64'
-                src='/placeholder.svg'
+                src='https://raw.githubusercontent.com/antonshell/placeholder-service/master/resources/test_images/img.png'
                 width='64'
               />
               <div className='flex flex-col gap-1'>
-                <p className='font-semibold'>Just released!</p>
+                <p className='font-semibold'>PHP esta muerto?</p>
                 <p className='text-sm'>
-                  Excited to announce the release of my new mobile app! Give it a try and let me know what you
-                  think.
+                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quia?
                 </p>
               </div>
             </div>
@@ -94,7 +93,7 @@ export default function page (): JSX.Element {
         </div>
       </div>
       <div className='grid items-start gap-4 text-sm'>
-        <h2 className='font-semibold text-lg'>Featured Projects</h2>
+        <h2 className='font-semibold text-lg'>Proyectos destacados</h2>
         <div className='grid gap-4 md:grid-cols-2'>
           <Card className='flex flex-col gap-2'>
             <CardHeader className='flex flex-row items-center justify-between pb-2 space-y-0'>
@@ -133,7 +132,7 @@ export default function page (): JSX.Element {
         </div>
       </div>
       <div className='grid items-start gap-4 text-sm'>
-        <h2 className='font-semibold text-lg'>Trending Topics</h2>
+        <h2 className='font-semibold text-lg'>Tags</h2>
         <div className='flex flex-wrap gap-2'>
           <Button size='sm' variant='outline'>
             #webdevelopment
