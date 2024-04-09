@@ -4,7 +4,7 @@ import Logo from '@/components/Logo'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
-import { BookMarked, HomeIcon, Package2Icon, SearchIcon, UserIcon } from 'lucide-react'
+import { BookMarked, HomeIcon, SearchIcon, UserIcon } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -31,9 +31,9 @@ export default function Home ({ children }: { children: React.ReactNode }): JSX.
 
   return (
     <div className='h-screen w-full max-h-screen min-h-screen flex fixed'>
-      <div className='hidden border-r border-gray-700 bg-gray-100/40 lg:block dark:bg-gray-800/40'>
+      <div className='hidden border-r border-gray-700 lg:block bg-gray-900/40'>
         <div className='flex h-full flex-col gap-2'>
-          <div className='flex h-[57px] items-center justify-center border-b border-gray-700 px-6 py-2'>
+          <div className='flex h-[57px] min-h-[57px] items-center justify-center border-b border-gray-700 px-6 py-2'>
             <Logo className='h-10 w-10' />
             <span className=''>Tri-Coders</span>
           </div>
@@ -53,12 +53,11 @@ export default function Home ({ children }: { children: React.ReactNode }): JSX.
           </div>
         </div>
       </div>
-      <div className='flex flex-col flex-1 max-h-screen overflow-hidden'>
-        <header className='flex h-20 lg:h-[60px] items-center gap-4 border-b border-gray-700 bg-gray-100/40 px-6 py-2 dark:bg-gray-800/40'>
-          <Link className='lg:hidden' href='#'>
-            <Package2Icon className='h-6 w-6' />
-            <span className='sr-only'>Inicio</span>
-          </Link>
+
+      <div className='flex flex-col flex-1'>
+        <header className='flex h-20 lg:h-[57px] items-center gap-4 border-b border-gray-700 bg-gray-100/40 px-6 py-2 dark:bg-gray-900/40'>
+          <Logo className='h-12 w-12 lg:hidden' />
+          <span className='sr-only'>Inicio</span>
           <div className='w-full flex-1'>
             <form>
               <div className='relative'>

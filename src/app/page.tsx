@@ -11,7 +11,7 @@ export default function Home (): JSX.Element {
   return (
     <main className='flex flex-col min-h-screen'>
       <header className='flex-1'>
-        <div className='container flex md:flex-row flex-col items-center justify-between h-[134px] px-4 md:px-6'>
+        <div className='bg-neutral-950 flex md:flex-row flex-col border-b border-gray-600 mb-8 items-center justify-around h-[134px] px-4 md:px-6'>
           <nav className='flex items-center space-x-4'>
             <Logo className='w-28' />
           </nav>
@@ -54,7 +54,7 @@ export default function Home (): JSX.Element {
           </div>
         </div>
 
-        <div className='py-12 lg:py-24 bg-neutral-950'>
+        <div className='py-12 lg:py-24 bg-neutral-950 border-t border-gray-700'>
           <div className='container grid items-center gap-10 px-4 md:px-6 xl:gap-20'>
             <div className='space-y-4 text-center lg:space-y-8'>
               <h2 className='text-3xl font-bold tracking-tighter sm:text-5xl'>Iteración ágil, innovación continua</h2>
@@ -89,7 +89,7 @@ export default function Home (): JSX.Element {
 
       </main>
 
-      <footer className='border-t py-12'>
+      <footer className='border-t py-12 border-gray-700'>
         <div className='container flex flex-col gap-4 items-center justify-center text-center px-4 md:px-6'>
           <div className='flex items-center justify-center gap-2'>
             <Link
