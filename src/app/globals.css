@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 /* clase de tailwind a bg */
 body {
     @apply bg-neutral-950;
@@ -10,6 +11,21 @@ body {
 .grid-res {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+}
+
+.my-masonry-grid {
+    display: -webkit-box;
+    /* Not needed if autoprefixing */
+    display: -ms-flexbox;
+    /* Not needed if autoprefixing */
+    display: flex;
+    /* gutter size offset */
+    width: 100%;
+}
+
+.my-masonry-grid_column {
+    /* gutter size */
+    background-clip: padding-box;
 }
 
 /* scroll  */

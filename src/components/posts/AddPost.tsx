@@ -60,7 +60,7 @@ export default function AddPost ({ setPost }: { setPost: (val: any) => void }): 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className='m-3 w-32 ml-auto'>Crear publicación</Button>
+        <Button className='m-3 w-32 ml-auto absolute left-4'>Crear publicación</Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
