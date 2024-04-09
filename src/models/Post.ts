@@ -1,20 +1,22 @@
 import { Schema, model, models } from 'mongoose'
 
 const postSchema = new Schema({
-  title: String,
   content: String,
   image: String,
   likes: {
-    type: Number,
-    default: 0
+    type: [Schema.Types.ObjectId],
+    ref: 'User',
+    default: []
   },
   id_user: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: true
   },
   id_comment: [{
     type: Schema.Types.ObjectId,
-    ref: 'Comment'
+    ref: 'Comment',
+    default: []
   }]
 }, {
   versionKey: false,

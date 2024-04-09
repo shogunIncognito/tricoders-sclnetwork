@@ -37,16 +37,20 @@ export default function MyPosts (): JSX.Element {
                 width='500'
               />
             </CardDescription>
-            <div className='space-y-2 border-t pt-4 w-full'>
-              <div className='flex items-center space-x-2'>
-                <Button className='rounded-full p-2' disabled size='icon' variant='ghost'>
-                  <HeartIcon className='w-4 h-4' />
-                </Button>
-                <span className='opacity-50'>2</span>
-                <Button className='rounded-full p-2' size='icon' variant='ghost'>
-                  <MessageSquareIcon className='w-4 h-4' />
-                </Button>
-                <span className='opacity-80'>3</span>
+            <div className='space-y-2 border-t mt-4 border-gray-600 pt-4 w-full'>
+              <div className='flex items-center gap-3'>
+                <div className='flex items-center gap-1'>
+                  <Button className='rounded-full p-2' disabled size='icon' variant='ghost'>
+                    <HeartIcon className='w-4 h-4' />
+                  </Button>
+                  <span className='opacity-50 ml-0'>3</span>
+                </div>
+                <div className='flex items-center gap-1'>
+                  <Button className='rounded-full p-2' size='icon' variant='ghost'>
+                    <MessageSquareIcon className='w-4 h-4' />
+                  </Button>
+                  <span className='opacity-80 ml-0'>3</span>
+                </div>
               </div>
             </div>
           </CardContent>

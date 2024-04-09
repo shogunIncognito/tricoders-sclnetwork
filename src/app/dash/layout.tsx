@@ -108,7 +108,6 @@ export default function Home ({ children }: { children: React.ReactNode }): JSX.
         </header>
 
         {children}
-
       </div>
     </div>
   )
