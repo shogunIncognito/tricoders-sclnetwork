@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Post } from '../../../types'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useState } from 'react'
 
 const breakpointColumnsObj = {
   default: 3,
@@ -12,11 +13,23 @@ const breakpointColumnsObj = {
   600: 1
 }
 
+const skeletonBreakpointColumnsObj = {
+  default: 3,
+  1340: 2,
+  750: 1
+}
+
 export default function PostsContainer ({ posts, loading }: { posts: Post[] | null, loading: boolean }): JSX.Element {
+  const [imagesLoaded, setImagesLoaded] = useState<string[]>([])
+
+  const handleImageLoad = (img: string): void => {
+    setImagesLoaded((prev: string[]) => [...prev, img])
+  }
+
   if (loading) {
     return (
       <Masonry
-        breakpointCols={breakpointColumnsObj}
+        breakpointCols={skeletonBreakpointColumnsObj}
         className='my-masonry-grid px-8 overflow-auto gap-5 mt-14'
         columnClassName='my-masonry-grid_column'
       >
@@ -48,9 +61,9 @@ export default function PostsContainer ({ posts, loading }: { posts: Post[] | nu
       columnClassName='my-masonry-grid_column'
     >
       {posts?.map(post => (
-        <div key={post._id} className='grid gap-4 p-1.5 place-content-center'>
+        <div key={post._id} className='gap-4 p-1.5'>
           <Card className='p-4 space-y-4 w-full'>
-            <div className='space-y-2'>
+            <div className='space-y-2 w-full'>
               <div className='flex items-center space-x-2'>
                 <img
                   alt={post.id_user.username}
@@ -76,7 +89,10 @@ export default function PostsContainer ({ posts, loading }: { posts: Post[] | nu
                   alt='Cover image'
                   className='w-full overflow-hidden rounded-lg object-cover object-center'
                   src={post.image}
+                  onLoad={() => handleImageLoad(post.image)}
+                  style={{ display: imagesLoaded.includes(post.image) ? 'block' : 'none' }}
                 />
+                {!imagesLoaded.includes(post.image) && <Skeleton className='h-[250px] w-auto overflow-hidden rounded-lg object-cover object-center' />}
               </div>
             </div>
             <div className='space-y-2 border-t border-gray-600 pt-4 w-full'>
