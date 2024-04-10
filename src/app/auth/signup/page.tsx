@@ -12,6 +12,7 @@ import { useState } from 'react'
 import Logo from '@/components/Logo'
 import { signUp } from '@/services/api'
 import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
   username: z.string().min(4, {
@@ -29,6 +30,7 @@ const formSchema = z.object({
 
 export default function UserRegisterForm (): JSX.Element {
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,7 +46,10 @@ export default function UserRegisterForm (): JSX.Element {
     setIsLoading(true)
     console.log(values)
     signUp(values)
-      .then(() => toast.success('Cuenta creada correctamente'))
+      .then(() => {
+        router.replace('/dash')
+        toast.success('Cuenta creada correctamente')
+      })
       .catch((error) => {
         console.error(error)
         toast.error('Error al crear la cuenta')
@@ -126,13 +131,12 @@ export default function UserRegisterForm (): JSX.Element {
                 {isLoading && (
                   <Icons.Spinner className='mr-2 h-4 w-4 animate-spin' />
                 )}
-                Iniciar sesión
+                Crear cuenta
               </Button>
             </form>
           </Form>
         </div>
       </div>
     </div>
-
   )
 }
