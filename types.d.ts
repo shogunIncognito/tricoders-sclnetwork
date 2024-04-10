@@ -13,6 +13,9 @@ export interface User {
   role: string
   id_post: string[]
   id_comment: string[]
+  description: string
+  followers: string[]
+  following: string[]
 }
 
 export interface Post {
@@ -39,4 +42,8 @@ export interface useFetchResponse {
 
 export interface useFetchPostsResponse extends Omit<useFetchResponse, 'data'> {
   data: Post[] | null
+}
+
+export interface useFetchUserResponse extends Omit<useFetchResponse, 'data'> {
+  data: User | null
 }

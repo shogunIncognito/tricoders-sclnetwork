@@ -1,26 +1,16 @@
-import { AxiosError } from 'axios'
-import { getLoginImage, getPosts } from '@/services/api'
+import axios, { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
 import { useFetchResponse } from '../../types'
 
-const endpoints: Keys = {
-  posts: async () => await getPosts(),
-  loginImage: async () => await getLoginImage()
-}
-
-interface Keys {
-  [key: string]: () => Promise<any>
-}
-
-export default function useFetch (url: 'posts' | 'loginImage'): useFetchResponse {
+export default function useFetch (url: string): useFetchResponse {
   const [data, setData] = useState(null)
   const [error, setError] = useState<AxiosError | null>(null)
   const [loading, setLoading] = useState(true)
 
   const getData = async (): Promise<void> => {
     try {
-      const response = await endpoints[url]()
-      setData(response)
+      const response = await axios.get(url)
+      setData(response.data)
     } catch (error) {
       if (error instanceof AxiosError) setError(error)
       console.log(error)

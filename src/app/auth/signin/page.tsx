@@ -11,6 +11,7 @@ import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 import Logo from '@/components/Logo'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 const formSchema = z.object({
   username: z.string().email({ message: 'Ingresa un correo válido.' }),
@@ -35,6 +36,7 @@ export default function UserLoginForm (): JSX.Element {
     setIsLoading(true)
     console.log(values)
     setTimeout(() => {
+      toast.success('Inicio de sesión exitoso.')
       setIsLoading(false)
       router.replace('/dash')
     }, 500)

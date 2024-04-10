@@ -1,9 +1,22 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+'use client'
+
+import Loading from '@/components/profile/Loading'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import useFetch from '@/hooks/useFetch'
 import { FileTextIcon, StarIcon, UsersIcon } from 'lucide-react'
 import Link from 'next/link'
+import { useFetchUserResponse } from '../../../../../types'
 
-export default function page (): JSX.Element {
+export default function page ({ params }: { params: { id: string } }): JSX.Element {
+  const { data: user, loading, error }: useFetchUserResponse = useFetch(`/api/users/${params.id}`)
+
+  console.log(user, params.id)
+
+  if (loading) return <Loading />
+  if ((Boolean(error)) || (user === null)) return <p>Error: {error?.message}</p>
+
   return (
     <main className='flex flex-1 lg:w-3/4 mx-auto flex-col gap-4 p-4 md:gap-8 md:p-6'>
       <div className='grid items-start gap-4 md:grid-cols-[200px_1fr] lg:grid-cols-[250px_1fr_300px]'>
@@ -13,7 +26,7 @@ export default function page (): JSX.Element {
               alt='Avatar'
               className='rounded-full border'
               height='80'
-              src='https://i.pravatar.cc/300'
+              src={user?.image}
               style={{
                 aspectRatio: '80/80',
                 objectFit: 'cover'
@@ -21,14 +34,13 @@ export default function page (): JSX.Element {
               width='80'
             />
             <div className='flex flex-col'>
-              <h1 className='font-semibold text-xl'>John Doe</h1>
-              <p className='text-sm text-gray-500 dark:text-gray-400'>@johndoe</p>
+              <h1 className='font-semibold text-xl'>{user.username}</h1>
+              <p className='text-sm text-gray-500 dark:text-gray-400'>{user.email}</p>
             </div>
           </div>
           <div className='grid items-start gap-1 text-sm'>
             <p>
-              <span className='font-semibold'>Bio:</span>
-              Software Engineer | Open Source Contributor
+              {user.description || 'Software Engineer | Open Source Contributor'}
             </p>
             <p>
               <span className='font-semibold'>Location:</span>
@@ -43,17 +55,17 @@ export default function page (): JSX.Element {
           <div className='flex items-center gap-2'>
             <UsersIcon className='h-4 w-4' />
             <span className='font-semibold'>Seguidores</span>
-            <span>1200</span>
+            <span>{user.followers.length}</span>
           </div>
           <div className='flex items-center gap-2'>
             <UsersIcon className='h-4 w-4' />
             <span className='font-semibold'>Siguiendo</span>
-            <span>520</span>
+            <span>{user.following.length}</span>
           </div>
           <div className='flex items-center gap-2'>
             <FileTextIcon className='h-4 w-4' />
             <span className='font-semibold'>Publicaciones</span>
-            <span>24</span>
+            <span>{user.id_post.length}</span>
           </div>
         </div>
         <div className='grid items-start gap-2 text-sm'>

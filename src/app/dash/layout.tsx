@@ -22,7 +22,7 @@ const routes = [
   {
     label: 'Perfil',
     icon: UserIcon,
-    href: '/dash/profile'
+    href: '/dash/profile/66140ab1815be0aeffe6e611'
   }
 ]
 

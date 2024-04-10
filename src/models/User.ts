@@ -15,6 +15,15 @@ const userSchema = new Schema({
     type: String,
     default: 'user'
   },
+  description: String,
+  followers: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  following: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   id_post: [{
     type: Schema.Types.ObjectId,
     ref: 'Post'

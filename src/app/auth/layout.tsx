@@ -17,7 +17,7 @@ export default function AuthenticationPage ({ children }: { children: React.Reac
     setIsLoading(true)
     getLoginImage()
       .then(res => setImage(res.url))
-      .catch(() => setImage('https://source.unsplash.com/1920x1080/?software'))
+      .catch(() => setImage(''))
       .finally(() => setIsLoading(false))
   }, [])
 
@@ -26,7 +26,7 @@ export default function AuthenticationPage ({ children }: { children: React.Reac
       <Link
         href={path === '/auth/signin' ? '/auth/signup' : '/auth/signin'}
         className={cn(
-          'absolute right-4 top-4 md:right-8 md:top-8'
+          'absolute right-4 top-4 md:right-8 md:top-8 hover:underline'
         )}
       >
         {path === '/auth/signin' ? 'Registrarse' : 'Iniciar Sesión'}
