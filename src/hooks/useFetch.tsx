@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
-import { useFetchResponse } from '../../types'
+import { useFetchResponse } from '../types/types'
 
 export default function useFetch (url: string): useFetchResponse {
   const [data, setData] = useState(null)

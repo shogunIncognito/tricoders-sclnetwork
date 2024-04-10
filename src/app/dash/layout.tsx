@@ -5,8 +5,10 @@ import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { BookMarked, HomeIcon, SearchIcon, UserIcon } from 'lucide-react'
+import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { toast } from 'sonner'
 
 const routes = [
   {
@@ -28,6 +30,12 @@ const routes = [
 
 export default function Home ({ children }: { children: React.ReactNode }): JSX.Element {
   const path = usePathname()
+
+  const closeSession = (): void => {
+    signOut()
+      .then(() => toast.success('Sesión cerrada'))
+      .catch(() => toast.error('Ha ocurrido un error'))
+  }
 
   return (
     <div className='h-screen w-full max-h-screen min-h-screen flex fixed'>
@@ -101,7 +109,9 @@ export default function Home ({ children }: { children: React.ReactNode }): JSX.
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                Cerrar sesión
+                <button onClick={closeSession}>
+                  Cerrar sesión
+                </button>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

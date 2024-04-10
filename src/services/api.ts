@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Post, PostDTO, SignUp } from '../../types'
+import { Post, PostDTO, SignUp } from '../types/types'
 
 // auth
 export const getLoginImage = async (): Promise<any> => {

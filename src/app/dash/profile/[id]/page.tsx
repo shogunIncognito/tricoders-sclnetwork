@@ -7,7 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import useFetch from '@/hooks/useFetch'
 import { FileTextIcon, StarIcon, UsersIcon } from 'lucide-react'
 import Link from 'next/link'
-import { useFetchUserResponse } from '../../../../../types'
+import { useFetchUserResponse } from '../../../../types/types'
 
 export default function page ({ params }: { params: { id: string } }): JSX.Element {
   const { data: user, loading, error }: useFetchUserResponse = useFetch(`/api/users/${params.id}`)

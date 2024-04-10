@@ -12,34 +12,37 @@ import { useState } from 'react'
 import Logo from '@/components/Logo'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { signIn } from 'next-auth/react'
 
 const formSchema = z.object({
-  username: z.string().email({ message: 'Ingresa un correo válido.' }),
+  email: z.string().email({ message: 'Ingresa un correo válido.' }),
   password: z.string().min(6, {
     message: 'La contraseña debe tener al menos 6 caracteres.'
   })
 })
 
 export default function UserLoginForm (): JSX.Element {
-  const [isLoading, setIsLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
+      email: '',
       password: ''
     }
   })
 
   function onSubmit (values: z.infer<typeof formSchema>): void {
-    setIsLoading(true)
-    console.log(values)
-    setTimeout(() => {
-      toast.success('Inicio de sesión exitoso.')
-      setIsLoading(false)
-      router.replace('/dash')
-    }, 500)
+    setLoading(true)
+
+    signIn('credentials', { ...values, redirect: false })
+      .then((res) => {
+        if (!((res?.ok) ?? false)) return toast.error(res?.error ?? 'Error al iniciar sesión')
+        toast.success('Inicio de sesión exitoso.')
+        router.replace('/dash')
+      })
+      .finally(() => setLoading(false))
   }
 
   return (
@@ -62,7 +65,7 @@ export default function UserLoginForm (): JSX.Element {
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
               <FormField
                 control={form.control}
-                name='username'
+                name='email'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='dark:text-white'>Correo</FormLabel>
@@ -86,8 +89,8 @@ export default function UserLoginForm (): JSX.Element {
                   </FormItem>
                 )}
               />
-              <Button className='mt-5 w-full' disabled={isLoading}>
-                {isLoading && (
+              <Button className='mt-5 w-full' disabled={loading}>
+                {loading && (
                   <Icons.Spinner className='mr-2 h-4 w-4 animate-spin' />
                 )}
                 Iniciar sesión

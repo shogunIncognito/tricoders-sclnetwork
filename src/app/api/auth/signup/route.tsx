@@ -1,6 +1,6 @@
 import { dbConnect } from '@/db/db_config'
 import { NextResponse } from 'next/server'
-// import bcrypt from 'bcrypt'
+import bcrypt from 'bcrypt'
 import User from '@/models/User'
 
 export async function POST (req: Request): Promise<NextResponse> {
@@ -16,8 +16,7 @@ export async function POST (req: Request): Promise<NextResponse> {
       email,
       username,
       image: 'https://i.pravatar.cc/300',
-      password
-      // password: await bcrypt.hash(password, 10)
+      password: await bcrypt.hash(password, 10)
     })
 
     newUser.save()

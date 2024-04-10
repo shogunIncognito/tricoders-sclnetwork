@@ -25,8 +25,14 @@ export async function POST (req: Request): Promise<NextResponse> {
     const newPost = new Post(post)
     await newPost.save()
 
+    // agrega el id del post al usuario
+    await User.findByIdAndUpdate(post.id_user, { $push: { id_post: newPost._id } })
+
+    await newPost.populate('id_user')
+
     return NextResponse.json(newPost)
   } catch (error) {
+    console.log(error)
     return NextResponse.json({
       message: 'Error creating post',
       error

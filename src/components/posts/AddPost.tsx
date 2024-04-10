@@ -17,12 +17,15 @@ import axios from 'axios'
 import { createPost } from '@/services/api'
 import { toast } from 'sonner'
 import { Icons } from '../icons'
-import { Post } from '../../../types'
+import { Post } from '../../types/types'
+import { useSession } from 'next-auth/react'
 
 export default function AddPost ({ setPost }: { setPost: (val: any) => void }): JSX.Element {
   const [image, setImage] = useState<{ url: string | null, file: File | null }>({ url: null, file: null })
   const [content, setContent] = useState<string>('')
   const [loading, setLoading] = useState(false)
+  const [open, setOpen] = useState(false)
+  const { data } = useSession()
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>): void => {
     if (e.target.files === null) return
@@ -35,6 +38,7 @@ export default function AddPost ({ setPost }: { setPost: (val: any) => void }): 
   const handleCreate = async (): Promise<void> => {
     try {
       if (!content || !image.file) return
+      if (!data) return
 
       setLoading(true)
       const formData = new FormData()
@@ -43,10 +47,11 @@ export default function AddPost ({ setPost }: { setPost: (val: any) => void }): 
       formData.append('cloud_name', process.env.NEXT_PUBLIC_CLOUD_NAME as string)
 
       const res = await axios.post('https://api.cloudinary.com/v1_1/ddxmom2c3/image/upload', formData)
-      const newPost = await createPost({ content, image: res.data.url, id_user: '661400be815be0aeffe6e60e' })
+      const newPost = await createPost({ content, image: res.data.url, id_user: data.user._id })
 
       toast.success('Publicación creada')
       setPost((prev: Post[]) => [newPost, ...prev])
+      setOpen(false)
     } catch (error) {
       console.error(error)
       toast.error('Error al crear la publicación')
@@ -58,9 +63,9 @@ export default function AddPost ({ setPost }: { setPost: (val: any) => void }): 
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className='m-3 w-32 ml-auto absolute left-6'>Crear publicación</Button>
+        <Button className='m-3 w-32 ml-auto absolute left-6' onClick={() => setOpen(true)}>Crear publicación</Button>
       </DialogTrigger>
       <DialogContent className='max-w-[80%] sm:max-w-[425px]'>
         <DialogHeader>
@@ -103,7 +108,6 @@ export default function AddPost ({ setPost }: { setPost: (val: any) => void }): 
             )}
             Publicar
           </Button>
-
         </DialogFooter>
       </DialogContent>
     </Dialog>

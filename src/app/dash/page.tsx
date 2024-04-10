@@ -3,7 +3,7 @@
 
 import AddPost from '@/components/posts/AddPost'
 import useFetch from '@/hooks/useFetch'
-import { useFetchPostsResponse } from '../../../types'
+import { useFetchPostsResponse } from '../../types/types'
 import Link from 'next/link'
 import PostsContainer from '@/components/posts/PostsContainer'
 

@@ -2,7 +2,7 @@ import Masonry from 'react-masonry-css'
 import { HeartIcon, MessageSquareIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Post } from '../../../types'
+import { Post } from '../../types/types'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useState } from 'react'
 
@@ -60,7 +60,7 @@ export default function PostsContainer ({ posts, loading }: { posts: Post[] | nu
       className='my-masonry-grid px-4 overflow-auto mt-14'
       columnClassName='my-masonry-grid_column'
     >
-      {posts?.map(post => (
+      {posts?.map((post, i) => (
         <div key={post._id} className='gap-4 p-1.5'>
           <Card className='p-4 space-y-4 w-full'>
             <div className='space-y-2 w-full'>
@@ -92,7 +92,8 @@ export default function PostsContainer ({ posts, loading }: { posts: Post[] | nu
                   onLoad={() => handleImageLoad(post.image)}
                   style={{ display: imagesLoaded.includes(post.image) ? 'block' : 'none' }}
                 />
-                {!imagesLoaded.includes(post.image) && <Skeleton className='h-[250px] w-auto overflow-hidden rounded-lg object-cover object-center' />}
+                {!imagesLoaded.includes(post.image) &&
+                  <Skeleton className='h-[250px] w-auto overflow-hidden rounded-lg object-cover object-center' style={{ height: i % 2 === 0 ? '350px' : '240px' }} />}
               </div>
             </div>
             <div className='space-y-2 border-t border-gray-600 pt-4 w-full'>
