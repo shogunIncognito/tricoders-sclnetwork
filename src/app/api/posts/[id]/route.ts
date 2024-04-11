@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
+import { dbConnect } from '@/db/db_config'
 import Post from '@/models/Post'
 import { NextResponse } from 'next/server'
 
 export async function POST (req: Request, { params }: { params: any }): Promise<NextResponse> {
   try {
+    await dbConnect()
     const { userId } = await req.json()
 
     const post = await Post.findOne({ _id: params.id })

@@ -57,7 +57,7 @@ export default function PostsContainer ({ posts, loading, setPost }: PostProps):
       <>
         <Masonry
           breakpointCols={skeletonBreakpointColumnsObj}
-          className='my-masonry-grid px-8 overflow-auto gap-5 mt-14'
+          className='my-masonry-grid-skeleton px-8 overflow-auto gap-5 mt-14'
           columnClassName='my-masonry-grid_column'
         >
           {Array.from({ length: 10 }).map((_, i) => (

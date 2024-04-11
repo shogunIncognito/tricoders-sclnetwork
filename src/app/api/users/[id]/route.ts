@@ -1,8 +1,10 @@
+import { dbConnect } from '@/db/db_config'
 import User from '@/models/User'
 import { NextResponse } from 'next/server'
 
 export async function GET (req: Request, { params }: { params: any }): Promise<NextResponse> {
   try {
+    await dbConnect()
     const user = await User.findById(params.id)
     if (user === null) return NextResponse.json({ message: 'User not found' }, { status: 404 })
 
