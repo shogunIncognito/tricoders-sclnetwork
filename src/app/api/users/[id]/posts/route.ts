@@ -4,6 +4,9 @@ import { NextResponse } from 'next/server'
 
 export async function GET (req: Request, { params }: { params: any }): Promise<NextResponse> {
   try {
+    console.log(params.id)
+    if (params.id === 'loading') return NextResponse.json([], { status: 200 })
+
     const userPosts = await Post.find({ id_user: params.id }).populate({ path: 'id_user', model: User }).sort({ createdAt: -1 })
 
     return NextResponse.json(userPosts)

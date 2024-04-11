@@ -2,22 +2,34 @@
 'use client'
 
 import PostsContainer from '@/components/posts/PostsContainer'
-import useFetch from '@/hooks/useFetch'
+import { getUserPosts } from '@/services/api'
+import { Post } from '@/types/types'
 import { useSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
 
 export default function MyPosts (): JSX.Element {
-  // colocar id de la sesion
   const { data, status } = useSession()
-  const { data: posts, error, loading } = useFetch('/api/users/661400be815be0aeffe6e60e/posts')
+  const [posts, setPosts] = useState<Post[]>([])
+  const [loading, setLoading] = useState(false)
 
-  console.log(data, status)
+  useEffect(() => {
+    setLoading(true)
+    if (status === 'authenticated') {
+      getUserPosts(data?.user?._id)
+        .then(res => setPosts(res))
+        .catch(err => console.log(err))
+        .finally(() => setLoading(false))
+    }
+  }, [status])
 
-  if (error) return <p>Error: {error.message}</p>
+  const setValue = (data: any): void => {
+    setPosts(data)
+  }
 
   return (
     <>
       <h1 className='text-4xl font-bold opacity-75 text-center mt-12'>Tus publicaciones</h1>
-      <PostsContainer posts={posts} loading={loading} />
+      <PostsContainer posts={posts} loading={loading} setPost={setValue} />
     </>
   )
 }

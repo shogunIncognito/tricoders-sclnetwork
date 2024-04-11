@@ -13,6 +13,11 @@ export const signUp = async (data: SignUp): Promise<void> => {
 }
 
 // posts
+export const getUserPosts = async (userId: string): Promise<Post[]> => {
+  const response = await axios.get(`/api/users/${userId}/posts`)
+  return response.data
+}
+
 export const createPost = async (post: PostDTO): Promise<Post> => {
   const response = await axios.post('/api/posts', post)
   return response.data

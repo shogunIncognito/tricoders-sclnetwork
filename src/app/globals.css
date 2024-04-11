@@ -28,6 +28,12 @@ body {
     background-clip: padding-box;
 }
 
+@media (max-width: 1024px) {
+    .my-masonry-grid {
+        display: none;
+    }
+}
+
 /* scroll  */
 *::-webkit-scrollbar {
     -webkit-appearance: none;
