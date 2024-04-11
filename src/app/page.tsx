@@ -11,7 +11,7 @@ export default function Home (): JSX.Element {
   return (
     <main className='flex flex-col min-h-screen'>
       <header className='flex-1'>
-        <div className='bg-neutral-950 flex md:flex-row flex-col border-b border-gray-600 mb-8 items-center justify-around h-[134px] px-4 md:px-6'>
+        <div className='bg-neutral-950 flex p-4 md:flex-row flex-col border-b border-gray-600 mb-8 items-center justify-around px-4 md:px-6'>
           <nav className='flex items-center space-x-4'>
             <Logo className='w-28' />
           </nav>

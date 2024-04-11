@@ -16,7 +16,7 @@ export default function Posts (): JSX.Element {
     <div className='flex relative overflow-hidden flex-1'>
       <AddPost setPost={setValue} />
 
-      <PostsContainer posts={posts} loading={loading} />
+      <PostsContainer posts={posts} loading={loading} setPost={setValue} />
 
       {/* lista de usuarios que se estan siguiendo */}
       <aside className='hidden w-44 lg:w-60 lg:flex flex-col border-r border-gray-700 bg-gray-900/40'>

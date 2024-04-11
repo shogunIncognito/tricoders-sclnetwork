@@ -17,3 +17,12 @@ export const createPost = async (post: PostDTO): Promise<Post> => {
   const response = await axios.post('/api/posts', post)
   return response.data
 }
+
+export const likeToPost = async (postId: string, userId: string | undefined): Promise<void> => {
+  try {
+    const response = await axios.post(`/api/posts/${postId}`, { userId })
+    return response.data
+  } catch (error) {
+    console.log(error)
+  }
+}
