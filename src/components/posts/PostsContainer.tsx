@@ -9,7 +9,7 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { likeToPost } from '@/services/api'
 import { Icons } from '../icons'
-// import Comments from './Comments'
+import Comments from './Comments'
 
 const breakpointColumnsObj = {
   default: 3,
@@ -32,7 +32,7 @@ interface PostProps {
 
 export default function PostsContainer ({ posts, loading, setPost }: PostProps): JSX.Element {
   const [imagesLoaded, setImagesLoaded] = useState<string[]>([])
-  // const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState<Post | null>(null)
   const { data, status } = useSession()
 
   const handleImageLoad = (img: string): void => {
@@ -41,15 +41,20 @@ export default function PostsContainer ({ posts, loading, setPost }: PostProps):
 
   const sendLike = (postId: string): void => {
     void likeToPost(postId, data?.user._id)
-    setPost((prev: Post[]) => prev.map(post => {
+
+    const updatedPosts = posts!.map(post => {
       if (post._id === postId) {
-        return {
+        const updatedLikePost: Post = {
           ...post,
-          likes: post.likes.includes(data!.user._id) ? post.likes.filter(id => id !== data?.user._id) : [...post.likes, data?.user._id]
+          likes: post.likes.includes(data!.user._id) ? post.likes.filter(id => id !== data!.user._id) : [...post.likes, data!.user._id]
         }
+        setOpen(updatedLikePost)
+        return updatedLikePost
       }
       return post
-    }))
+    })
+
+    setPost(updatedPosts)
   }
 
   if (loading || status === 'loading') {
@@ -137,7 +142,7 @@ export default function PostsContainer ({ posts, loading, setPost }: PostProps):
                       <span className='opacity-80 ml-0'>{post.likes.length}</span>
                     </div>
                     <div className='flex items-center gap-1'>
-                      <Button onClick={() => {}} className='rounded-full p-2' size='icon' variant='ghost'>
+                      <Button onClick={() => setOpen(post)} className='rounded-full p-2' size='icon' variant='ghost'>
                         <MessageSquareIcon className='w-4 h-4' />
                       </Button>
                       <span className='opacity-80 ml-0'>{post.id_comment.length}</span>
@@ -150,7 +155,7 @@ export default function PostsContainer ({ posts, loading, setPost }: PostProps):
         }
         )}
       </Masonry>
-      {/* <Comments open={open} setOpen={setOpen} /> */}
+      <Comments post={open} setOpen={setOpen} sendLike={sendLike} />
     </>
 
   )
