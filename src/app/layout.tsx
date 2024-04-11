@@ -17,7 +17,7 @@ export default function RootLayout ({
   children: React.ReactNode
 }>): JSX.Element {
   return (
-    <html lang='es'>
+    <html lang='es' className='dark'>
       <body className={inter.className}>
         <SessionAuthProvider>
           {children}
