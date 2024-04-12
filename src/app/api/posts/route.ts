@@ -1,4 +1,5 @@
 import { dbConnect } from '@/db/db_config'
+import Comment from '@/models/Comment'
 import Post from '@/models/Post'
 import User from '@/models/User'
 import { NextResponse } from 'next/server'
@@ -6,7 +7,7 @@ import { NextResponse } from 'next/server'
 export async function GET (): Promise<NextResponse> {
   try {
     await dbConnect()
-    const posts = await Post.find({}).populate('id_user').populate('id_comment')
+    const posts = await Post.find({}).populate('id_user').populate({ path: 'id_comment', model: Comment })
       .sort({ createdAt: -1 })
     return NextResponse.json(posts)
   } catch (error) {
