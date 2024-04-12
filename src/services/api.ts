@@ -31,3 +31,8 @@ export const likeToPost = async (postId: string, userId: string | undefined): Pr
     console.log(error)
   }
 }
+
+export const createComment = async (comment: string, userId: string, postId: string): Promise<void> => {
+  const response = await axios.post(`/api/posts/${postId}/comments`, { comment, userId })
+  return response.data
+}

@@ -44,10 +44,9 @@ export default function UserRegisterForm (): JSX.Element {
 
   function onSubmit (values: z.infer<typeof formSchema>): void {
     setIsLoading(true)
-    console.log(values)
     signUp(values)
       .then(() => {
-        router.replace('/dash')
+        router.replace('/auth/signin')
         toast.success('Cuenta creada correctamente')
       })
       .catch((error) => {

@@ -6,6 +6,8 @@ const commentSchema = new Schema({
     type: Number,
     default: 0
   },
+  username: String,
+  image: String,
   id_user: {
     type: Schema.Types.ObjectId,
     ref: 'User'

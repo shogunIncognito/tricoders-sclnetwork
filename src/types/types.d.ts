@@ -24,7 +24,16 @@ export interface Post {
   image: string
   likes: string[]
   id_user: User
-  id_comment: string[]
+  id_comment: Comment[]
+}
+
+export interface Comment {
+  _id: string
+  content: string
+  username: string
+  image: string
+  id_user: string
+  id_post: string
 }
 
 export interface PostDTO {

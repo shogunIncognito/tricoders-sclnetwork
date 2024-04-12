@@ -6,7 +6,8 @@ import { NextResponse } from 'next/server'
 export async function GET (): Promise<NextResponse> {
   try {
     await dbConnect()
-    const posts = await Post.find({}).populate({ path: 'id_user', model: User }).sort({ createdAt: -1 })
+    const posts = await Post.find({}).populate('id_user').populate('id_comment')
+      .sort({ createdAt: -1 })
     return NextResponse.json(posts)
   } catch (error) {
     console.log(error)

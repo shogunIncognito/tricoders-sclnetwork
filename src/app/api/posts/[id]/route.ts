@@ -12,14 +12,10 @@ export async function POST (req: Request, { params }: { params: any }): Promise<
     if (post === null) return NextResponse.json({ message: 'Post not found' }, { status: 404 })
 
     if (post.likes.includes(userId)) {
-      console.log('Like removed')
       post.likes = post.likes.filter((id: string) => id.toString() !== userId)
     } else {
-      console.log('Like')
       post.likes.push(userId)
     }
-
-    console.log(post)
 
     await post.save()
 

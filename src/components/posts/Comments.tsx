@@ -7,6 +7,9 @@ import { Button } from '../ui/button'
 import { useSession } from 'next-auth/react'
 import { Input } from '../ui/input'
 import { useState } from 'react'
+import { createComment } from '@/services/api'
+import { toast } from 'sonner'
+import { Icons } from '../icons'
 
 interface CommentsProps {
   post: Post | null
@@ -17,15 +20,23 @@ interface CommentsProps {
 export default function Comments ({ post, setOpen, sendLike }: CommentsProps): JSX.Element | null {
   const { data } = useSession()
   const [comment, setComment] = useState('')
+  const [loading, setLoading] = useState(false)
 
   if (!post) return null
-
-  console.log(post)
 
   const handleComment = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
 
-    console.log(comment)
+    if (comment === '') {
+      toast.error('Debes escribir un comentario')
+      return
+    }
+
+    setLoading(true)
+    createComment(comment, data!.user._id, post._id)
+      .then(newPost => toast.success('Comentario creado'))
+      .catch(() => toast.error('Error creando comentario'))
+      .finally(() => setLoading(false))
   }
 
   const isLiked = post.likes.includes(data!.user._id)
@@ -82,43 +93,33 @@ export default function Comments ({ post, setOpen, sendLike }: CommentsProps): J
           </DialogHeader>
           <DialogTitle className='my-5'>Comentarios</DialogTitle>
           <div className='space-y-8 mt-2 max-h-fit'>
-            {/* {post.id_comment.map((comment, i) => ( */}
-            {Array.from({ length: 5 }).map((comment, i) => (
-              <div key={i} className='flex items-center border-b border-gray-700 pb-4 space-x-2'>
-                <img
-                  alt='aaaa'
-                  className='rounded-full'
-                  height='40'
-                  src='https://i.pravatar.cc/300'
-                  style={{
-                    aspectRatio: '40/40',
-                    objectFit: 'cover'
-                  }}
-                  width='40'
-                />
-                <div>
-                  <p className='text-sm text-gray-500 dark:text-gray-400'>Miguel</p>
-                  <h3 className='text-base font-semibold'>Hola esta muy feo ese carro con todo respeto</h3>
+            {post.id_comment.length === 0
+              ? (
+                <div className='text-center my-5 text-gray-500 dark:text-gray-400'>
+                  No hay comentarios
                 </div>
-              </div>
-            // <div key={i} className='flex items-center space-x-2'>
-            //   <img
-            //     alt={comment.id_user.username}
-            //     className='rounded-full'
-            //     height='40'
-            //     src={comment.id_user.image}
-            //     style={{
-            //       aspectRatio: '40/40',
-            //       objectFit: 'cover'
-            //     }}
-            //     width='40'
-            //   />
-            //   <div>
-            //     <h3 className='text-base font-semibold'>{comment.id_user.username}</h3>
-            //     <p className='text-sm text-gray-500 dark:text-gray-400'>{comment.id_user.email}</p>
-            //   </div>
-            // </div>
-            ))}
+                )
+              : (
+                  post.id_comment.map((comment) => (
+                    <div key={comment._id} className='flex items-center gap-3'>
+                      <img
+                        alt={comment.username}
+                        className='rounded-full'
+                        height='40'
+                        src={comment.image}
+                        style={{
+                          aspectRatio: '40/40',
+                          objectFit: 'cover'
+                        }}
+                        width='40'
+                      />
+                      <div>
+                        <h3 className='text-base font-semibold'>{comment.username}</h3>
+                        <p className='text-sm text-gray-500 dark:text-gray-400'>{comment.content}</p>
+                      </div>
+                    </div>
+                  ))
+                )}
           </div>
         </div>
         <DialogFooter>
@@ -128,9 +129,13 @@ export default function Comments ({ post, setOpen, sendLike }: CommentsProps): J
               placeholder='Escribe un comentario...'
               onChange={(e) => setComment(e.target.value)}
               type='text'
+              disabled={loading}
             />
-            <Button className='ml-2' size='sm' variant='secondary'>
-              Enviar
+            <Button className='ml-2' size='sm' variant='secondary' disabled={loading}>
+              {loading && (
+                <Icons.Spinner className='mr-2 h-4 w-4 animate-spin' />
+              )}
+              Publicar
             </Button>
           </form>
         </DialogFooter>

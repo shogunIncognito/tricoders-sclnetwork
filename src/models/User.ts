@@ -33,8 +33,7 @@ const userSchema = new Schema({
     ref: 'Comment'
   }]
 }, {
-  versionKey: false,
-  timestamps: true
+  versionKey: false
 })
 
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
