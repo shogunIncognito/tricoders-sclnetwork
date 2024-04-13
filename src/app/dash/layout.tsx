@@ -2,6 +2,7 @@
 'use client'
 
 import Logo from '@/components/Logo'
+import MobileSideBar from '@/components/MobileSidebar'
 import { Icons } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
@@ -89,8 +90,11 @@ export default function Home ({ children }: { children: React.ReactNode }): JSX.
               </div>
             </form>
           </div>
+          {/* mobile shi  */}
+          <MobileSideBar routes={routes} path={path} closeSession={closeSession} />
+
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger asChild className='hidden md:block'>
               <Button
                 className='rounded-full border border-gray-200 w-8 h-8 dark:border-gray-800'
                 size='icon'

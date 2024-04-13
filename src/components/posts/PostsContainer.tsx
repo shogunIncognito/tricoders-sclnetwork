@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import Masonry from 'react-masonry-css'
 import { HeartIcon, MessageSquareIcon } from 'lucide-react'
@@ -49,7 +50,8 @@ export default function PostsContainer ({ posts, loading, setPost }: PostProps):
           ...post,
           likes: post.likes.includes(data!.user._id) ? post.likes.filter(id => id !== data!.user._id) : [...post.likes, data!.user._id]
         }
-        setOpen(updatedLikePost)
+
+        if (open) setOpen(updatedLikePost)
         return updatedLikePost
       }
       return post
@@ -103,7 +105,7 @@ export default function PostsContainer ({ posts, loading, setPost }: PostProps):
               <Card className='p-4 space-y-4 w-full'>
                 <div className='space-y-2 w-full'>
                   <div className='flex items-center space-x-2'>
-                    <Link className='flex items-center space-x-2 hover:[&>div]:opacity-100 transition-all' href={`/dash/profile/${post.id_user._id}`}>
+                    <Link className='flex items-center space-x-2 hover:[&>div]:opacity-100' href={`/dash/profile/${post.id_user._id}`}>
                       <img
                         alt={post.id_user.username}
                         className='rounded-full'
@@ -115,7 +117,7 @@ export default function PostsContainer ({ posts, loading, setPost }: PostProps):
                         }}
                         width='40'
                       />
-                      <div className='opacity-80'>
+                      <div className='opacity-80 transition-all'>
                         <h3 className='text-base opacity-80 font-semibold'>{post.id_user.username}</h3>
                         <p className='text-sm text-gray-500 dark:text-gray-400'>{post.id_user.email}</p>
                       </div>
