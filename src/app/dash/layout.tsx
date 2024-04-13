@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 'use client'
 
 import Logo from '@/components/Logo'
@@ -11,27 +12,9 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 
-const routes = [
-  {
-    label: 'Inicio',
-    icon: HomeIcon,
-    href: '/dash'
-  },
-  {
-    label: 'Mis Publicaciones',
-    icon: BookMarked,
-    href: '/dash/myposts'
-  },
-  {
-    label: 'Perfil',
-    icon: UserIcon,
-    href: '/dash/profile/66140ab1815be0aeffe6e611'
-  }
-]
-
 export default function Home ({ children }: { children: React.ReactNode }): JSX.Element {
   const path = usePathname()
-  const { status } = useSession()
+  const { data, status } = useSession()
 
   const closeSession = (): void => {
     signOut()
@@ -46,6 +29,24 @@ export default function Home ({ children }: { children: React.ReactNode }): JSX.
       </div>
     )
   }
+
+  const routes = [
+    {
+      label: 'Inicio',
+      icon: HomeIcon,
+      href: '/dash'
+    },
+    {
+      label: 'Mis Publicaciones',
+      icon: BookMarked,
+      href: '/dash/myposts'
+    },
+    {
+      label: 'Perfil',
+      icon: UserIcon,
+      href: `/dash/profile/${data!.user._id}`
+    }
+  ]
 
   return (
     <div className='h-screen w-full max-h-screen min-h-screen flex fixed'>

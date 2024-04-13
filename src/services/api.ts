@@ -37,7 +37,14 @@ export const createComment = async (comment: string, userId: string, postId: str
   return response.data
 }
 
-export const followUser = async (userId: string, followerId: string): Promise<void> => {
-  const response = await axios.post(`/api/users/${userId}/followers`, { followerId })
+// profile
+
+export const followUser = async (userToFollow: string, userId: string): Promise<void> => {
+  const response = await axios.post(`/api/users/${userToFollow}/following`, { userId })
+  return response.data
+}
+
+export const deleteFollow = async (userToUnfollow: string, userId: string): Promise<void> => {
+  const response = await axios.post(`/api/users/${userToUnfollow}/unfollow`, { userId })
   return response.data
 }

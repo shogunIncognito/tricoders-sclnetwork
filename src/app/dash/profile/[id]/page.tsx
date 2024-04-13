@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 'use client'
 
@@ -9,19 +10,36 @@ import { FileTextIcon, StarIcon, UsersIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useFetchUserResponse } from '../../../../types/types'
 import { useSession } from 'next-auth/react'
+import { deleteFollow, followUser } from '@/services/api'
+import { toast } from 'sonner'
+import { TooltipProvider, Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 export default function page ({ params }: { params: { id: string } }): JSX.Element {
-  const { data: user, loading, error }: useFetchUserResponse = useFetch(`/api/users/${params.id}`)
+  const { data: user, loading, error, setValue }: useFetchUserResponse = useFetch(`/api/users/${params.id}`)
   const { data } = useSession()
 
-  console.log(user, params.id)
+  const sendFollow = (): void => {
+    followUser(params.id, data!.user._id)
+      .then((res) => {
+        setValue(res)
+        toast.success('Ahora sigues a este usuario')
+      })
+      .catch((err) => console.log(err))
+  }
 
-  const followUser = (): void => {
-    console.log('Follow user')
+  const unFollow = (): void => {
+    deleteFollow(params.id, data!.user._id)
+      .then((res) => {
+        setValue(res)
+        toast.success('Dejaste de seguir a este usuario')
+      })
+      .catch((err) => console.log(err))
   }
 
   if (loading) return <Loading />
   if ((Boolean(error)) || (user === null)) return <p>Error: {error?.message}</p>
+
+  const isFollowing = user.followers.includes(data!.user._id)
 
   return (
     <main className='flex flex-1 lg:w-3/4 mx-auto mt-12 flex-col gap-4 p-4 md:gap-8 md:p-6'>
@@ -55,11 +73,27 @@ export default function page ({ params }: { params: { id: string } }): JSX.Eleme
             <p>
               <span className='font-semibold'>Website:</span> <Link href='#'>example.com</Link>
             </p>
-            {data?.user._id !== user._id && (
-              <Button onClick={followUser} size='sm' className='mt-5'>
-                Seguir
-              </Button>
-            )}
+
+            <TooltipProvider delayDuration={100}>
+              <Tooltip>
+                {data?.user._id !== user._id && (
+                  <>
+                    <TooltipTrigger asChild>
+                      {isFollowing
+                        ? (
+                          <Button onClick={unFollow} variant='outline'>Siguiendo</Button>
+                          )
+                        : (
+                          <Button onClick={sendFollow}>Seguir</Button>
+                          )}
+                    </TooltipTrigger>
+                    <TooltipContent className={isFollowing ? '' : 'hidden'}>
+                      <p>Dejar de seguir</p>
+                    </TooltipContent>
+                  </>
+                )}
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
         <div className='grid items-start gap-4 text-sm'>
