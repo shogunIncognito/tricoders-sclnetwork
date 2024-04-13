@@ -56,3 +56,7 @@ export interface useFetchPostsResponse extends Omit<useFetchResponse, 'data'> {
 export interface useFetchUserResponse extends Omit<useFetchResponse, 'data'> {
   data: User | null
 }
+
+export interface useFetchFollowingResponse extends Omit<useFetchResponse, 'data'> {
+  data: User[] | null
+}

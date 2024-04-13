@@ -10,6 +10,7 @@ import { useSession } from 'next-auth/react'
 import { likeToPost } from '@/services/api'
 import { Icons } from '../icons'
 import Comments from './Comments'
+import Link from 'next/link'
 
 const breakpointColumnsObj = {
   default: 3,
@@ -102,21 +103,23 @@ export default function PostsContainer ({ posts, loading, setPost }: PostProps):
               <Card className='p-4 space-y-4 w-full'>
                 <div className='space-y-2 w-full'>
                   <div className='flex items-center space-x-2'>
-                    <img
-                      alt={post.id_user.username}
-                      className='rounded-full'
-                      height='40'
-                      src={post.id_user.image}
-                      style={{
-                        aspectRatio: '40/40',
-                        objectFit: 'cover'
-                      }}
-                      width='40'
-                    />
-                    <div>
-                      <h3 className='text-base font-semibold'>{post.id_user.username}</h3>
-                      <p className='text-sm text-gray-500 dark:text-gray-400'>{post.id_user.email}</p>
-                    </div>
+                    <Link className='flex items-center space-x-2 hover:[&>div]:opacity-100 transition-all' href={`/dash/profile/${post.id_user._id}`}>
+                      <img
+                        alt={post.id_user.username}
+                        className='rounded-full'
+                        height='40'
+                        src={post.id_user.image}
+                        style={{
+                          aspectRatio: '40/40',
+                          objectFit: 'cover'
+                        }}
+                        width='40'
+                      />
+                      <div className='opacity-80'>
+                        <h3 className='text-base opacity-80 font-semibold'>{post.id_user.username}</h3>
+                        <p className='text-sm text-gray-500 dark:text-gray-400'>{post.id_user.email}</p>
+                      </div>
+                    </Link>
                   </div>
                   <div className='space-y-2'>
                     <p className='text-sm text-gray-500 dark:text-gray-400'>

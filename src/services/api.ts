@@ -36,3 +36,8 @@ export const createComment = async (comment: string, userId: string, postId: str
   const response = await axios.post(`/api/posts/${postId}/comments`, { comment, userId })
   return response.data
 }
+
+export const followUser = async (userId: string, followerId: string): Promise<void> => {
+  const response = await axios.post(`/api/users/${userId}/followers`, { followerId })
+  return response.data
+}

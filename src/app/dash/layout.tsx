@@ -1,11 +1,12 @@
 'use client'
 
 import Logo from '@/components/Logo'
+import { Icons } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { BookMarked, HomeIcon, SearchIcon, UserIcon } from 'lucide-react'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
@@ -30,11 +31,20 @@ const routes = [
 
 export default function Home ({ children }: { children: React.ReactNode }): JSX.Element {
   const path = usePathname()
+  const { status } = useSession()
 
   const closeSession = (): void => {
     signOut()
       .then(() => toast.success('Sesión cerrada'))
       .catch(() => toast.error('Ha ocurrido un error'))
+  }
+
+  if (status === 'loading' || status === 'unauthenticated') {
+    return (
+      <div className='flex items-center justify-center h-screen'>
+        <Icons.Spinner className='w-8 h-8 animate-spin' />
+      </div>
+    )
   }
 
   return (

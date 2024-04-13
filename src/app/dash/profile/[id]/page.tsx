@@ -8,17 +8,23 @@ import useFetch from '@/hooks/useFetch'
 import { FileTextIcon, StarIcon, UsersIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useFetchUserResponse } from '../../../../types/types'
+import { useSession } from 'next-auth/react'
 
 export default function page ({ params }: { params: { id: string } }): JSX.Element {
   const { data: user, loading, error }: useFetchUserResponse = useFetch(`/api/users/${params.id}`)
+  const { data } = useSession()
 
   console.log(user, params.id)
+
+  const followUser = (): void => {
+    console.log('Follow user')
+  }
 
   if (loading) return <Loading />
   if ((Boolean(error)) || (user === null)) return <p>Error: {error?.message}</p>
 
   return (
-    <main className='flex flex-1 lg:w-3/4 mx-auto flex-col gap-4 p-4 md:gap-8 md:p-6'>
+    <main className='flex flex-1 lg:w-3/4 mx-auto mt-12 flex-col gap-4 p-4 md:gap-8 md:p-6'>
       <div className='grid items-start gap-4 md:grid-cols-[200px_1fr] lg:grid-cols-[250px_1fr_300px]'>
         <div className='flex flex-col gap-2 md:gap-4'>
           <div className='flex items-center gap-2'>
@@ -49,6 +55,11 @@ export default function page ({ params }: { params: { id: string } }): JSX.Eleme
             <p>
               <span className='font-semibold'>Website:</span> <Link href='#'>example.com</Link>
             </p>
+            {data?.user._id !== user._id && (
+              <Button onClick={followUser} size='sm' className='mt-5'>
+                Seguir
+              </Button>
+            )}
           </div>
         </div>
         <div className='grid items-start gap-4 text-sm'>

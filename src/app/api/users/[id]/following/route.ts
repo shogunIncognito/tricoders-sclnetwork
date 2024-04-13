@@ -1,5 +1,4 @@
 import { dbConnect } from '@/db/db_config'
-import Post from '@/models/Post'
 import User from '@/models/User'
 import { NextResponse } from 'next/server'
 
@@ -7,11 +6,14 @@ export async function GET (req: Request, { params }: { params: any }): Promise<N
   try {
     await dbConnect()
 
-    const userPosts = await Post.find({ id_user: params.id }).populate({ path: 'id_user', model: User }).sort({ createdAt: -1 })
+    const following = await User.findOne({ _id: params.id }).populate('following').select('following')
 
-    return NextResponse.json(userPosts)
+    return NextResponse.json(following.following)
   } catch (error: any) {
+    console.log(error)
     if (error.kind === 'ObjectId') return NextResponse.json({ message: 'User not found' }, { status: 404 })
-    return NextResponse.json({ message: 'Error getting user' }, { status: 500 })
+    return NextResponse.json({ message: 'Error getting followings' }, { status: 500 })
   }
 }
+
+// hacer ruta para seguir a un usuario

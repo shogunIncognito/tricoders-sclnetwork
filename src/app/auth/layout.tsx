@@ -2,17 +2,19 @@
 
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Logo from '@/components/Logo'
 import { useEffect, useState } from 'react'
 import { getLoginImage } from '@/services/api'
 import { Icons } from '@/components/icons'
+import { useSession } from 'next-auth/react'
 
 export default function AuthenticationPage ({ children }: { children: React.ReactNode }): JSX.Element {
   const [image, setImage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const { status } = useSession()
   const path = usePathname()
-
+  const router = useRouter()
   useEffect(() => {
     setIsLoading(true)
     getLoginImage()
@@ -20,6 +22,20 @@ export default function AuthenticationPage ({ children }: { children: React.Reac
       .catch(() => setImage(''))
       .finally(() => setIsLoading(false))
   }, [])
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.replace('/dash')
+    }
+  }, [status])
+
+  if (status === 'loading' || status === 'authenticated') {
+    return (
+      <div className='flex items-center justify-center h-screen'>
+        <Icons.Spinner className='w-8 h-8 animate-spin' />
+      </div>
+    )
+  }
 
   return (
     <div className='container relative min-h-screen h-[800px] flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0'>
