@@ -5,22 +5,6 @@ import Post from '@/models/Post'
 import User from '@/models/User'
 import { NextResponse } from 'next/server'
 
-// export async function GET (req: Request, { params }: { params: any }): Promise<NextResponse> {
-//   try {
-//     await dbConnect()
-
-//     const comments = await Post.findOne({ _id: params.id }).select('id_comment').populate('id_comment')
-//       .sort({ createdAt: -1 })
-//     return NextResponse.json(comments)
-//   } catch (error) {
-//     console.log(error)
-//     return NextResponse.json({
-//       message: 'Error getting comments',
-//       error
-//     }, { status: 500 })
-//   }
-// }
-
 export async function POST (req: Request, { params }: { params: any }): Promise<NextResponse> {
   try {
     await dbConnect()
@@ -44,7 +28,7 @@ export async function POST (req: Request, { params }: { params: any }): Promise<
       { _id: params.id },
       { $push: { id_comment: newComment._id } },
       { new: true }
-    )
+    ).populate('id_comment').populate('id_user')
 
     return NextResponse.json(res)
   } catch (error: any) {

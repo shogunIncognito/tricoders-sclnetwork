@@ -15,9 +15,10 @@ interface CommentsProps {
   post: Post | null
   setOpen: (value: any) => void
   sendLike: (postId: string) => void
+  setPosts: (value: any) => void
 }
 
-export default function Comments ({ post, setOpen, sendLike }: CommentsProps): JSX.Element | null {
+export default function Comments ({ post, setOpen, sendLike, setPosts }: CommentsProps): JSX.Element | null {
   const { data } = useSession()
   const [comment, setComment] = useState('')
   const [loading, setLoading] = useState(false)
@@ -34,7 +35,16 @@ export default function Comments ({ post, setOpen, sendLike }: CommentsProps): J
 
     setLoading(true)
     createComment(comment, data!.user._id, post._id)
-      .then(newPost => toast.success('Comentario creado'))
+      .then(newPost => {
+        toast.success('Comentario creado')
+        setOpen(newPost)
+        setPosts((prev: Post[]) => prev.map(p => {
+          if (p._id === newPost._id) return newPost
+          return p
+        })
+        )
+        setComment('')
+      })
       .catch(() => toast.error('Error creando comentario'))
       .finally(() => setLoading(false))
   }

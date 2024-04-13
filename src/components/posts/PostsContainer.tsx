@@ -160,7 +160,7 @@ export default function PostsContainer ({ posts, loading, setPost }: PostProps):
         }
         )}
       </Masonry>
-      <Comments post={open} setOpen={setOpen} sendLike={sendLike} />
+      <Comments post={open} setOpen={setOpen} sendLike={sendLike} setPosts={setPost} />
     </>
 
   )

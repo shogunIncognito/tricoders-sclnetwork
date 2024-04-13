@@ -32,7 +32,7 @@ export const likeToPost = async (postId: string, userId: string | undefined): Pr
   }
 }
 
-export const createComment = async (comment: string, userId: string, postId: string): Promise<void> => {
+export const createComment = async (comment: string, userId: string, postId: string): Promise<Post> => {
   const response = await axios.post(`/api/posts/${postId}/comments`, { comment, userId })
   return response.data
 }
