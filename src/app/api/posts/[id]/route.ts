@@ -26,3 +26,17 @@ export async function POST (req: Request, { params }: { params: any }): Promise<
     return NextResponse.json({ message: 'Error loving post' }, { status: 500 })
   }
 }
+
+export async function DELETE (req: Request, { params }: { params: any }): Promise<NextResponse> {
+  try {
+    await dbConnect()
+
+    await Post.findByIdAndDelete(params.id)
+
+    return NextResponse.json({ message: 'Post deleted' })
+  } catch (error: any) {
+    console.log(error)
+    if (error.kind === 'ObjectId') return NextResponse.json({ message: 'Post not found' }, { status: 404 })
+    return NextResponse.json({ message: 'Error deleting post' }, { status: 500 })
+  }
+}

@@ -1,17 +1,19 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import Masonry from 'react-masonry-css'
-import { HeartIcon, MessageSquareIcon } from 'lucide-react'
+import { EllipsisVertical, HeartIcon, MessageSquareIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Post } from '../../types/types'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { likeToPost } from '@/services/api'
+import { deletePost, likeToPost } from '@/services/api'
 import { Icons } from '../icons'
 import Comments from './Comments'
 import Link from 'next/link'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
+import { toast } from 'sonner'
 
 const breakpointColumnsObj = {
   default: 3,
@@ -60,6 +62,17 @@ export default function PostsContainer ({ posts, loading, setPost }: PostProps):
     setPost(updatedPosts)
   }
 
+  const handleDeletePost = (postId: string): void => {
+    toast.promise(deletePost(postId), {
+      loading: 'Eliminando publicación...',
+      success: () => {
+        setPost((prev: Post[]) => prev.filter(post => post._id !== postId))
+        return 'Publicación eliminada'
+      },
+      error: 'Error eliminando publicación'
+    })
+  }
+
   if (loading || status === 'loading') {
     return (
       <>
@@ -104,7 +117,7 @@ export default function PostsContainer ({ posts, loading, setPost }: PostProps):
             <div key={post._id} className='gap-4 p-1.5'>
               <Card className='p-4 space-y-4 w-full'>
                 <div className='space-y-2 w-full'>
-                  <div className='flex items-center space-x-2'>
+                  <div className='flex items-center space-x-2 justify-between'>
                     <Link className='flex items-center space-x-2 hover:[&>div]:opacity-100' href={`/dash/profile/${post.id_user._id}`}>
                       <img
                         alt={post.id_user.username}
@@ -122,6 +135,26 @@ export default function PostsContainer ({ posts, loading, setPost }: PostProps):
                         <p className='text-sm text-gray-500 dark:text-gray-400'>{post.id_user.email}</p>
                       </div>
                     </Link>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild className='hidden md:block'>
+                        {data?.user._id === post.id_user._id && (
+                          <Button
+                            size='icon'
+                            variant='ghost'
+                            className='rounded-full'
+                          >
+                            <EllipsisVertical className='mx-auto' />
+                          </Button>
+                        )}
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align='end'>
+                        <DropdownMenuItem>
+                          <button onClick={() => handleDeletePost(post._id)}>
+                            Eliminar publicación
+                          </button>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                   <div className='space-y-2'>
                     <p className='text-sm text-gray-500 dark:text-gray-400'>

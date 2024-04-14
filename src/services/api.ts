@@ -23,6 +23,11 @@ export const createPost = async (post: PostDTO): Promise<Post> => {
   return response.data
 }
 
+export const deletePost = async (postId: string): Promise<void> => {
+  const response = await axios.delete(`/api/posts/${postId}`)
+  return response.data
+}
+
 export const likeToPost = async (postId: string, userId: string | undefined): Promise<void> => {
   try {
     const response = await axios.post(`/api/posts/${postId}`, { userId })
