@@ -10,12 +10,15 @@ import { Input } from '@/components/ui/input'
 import { BookMarked, HomeIcon, SearchIcon, UserIcon } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { toast } from 'sonner'
 
 export default function Home ({ children }: { children: React.ReactNode }): JSX.Element {
   const path = usePathname()
   const { data, status } = useSession()
+  const [search, setSearch] = useState('')
+  const router = useRouter()
 
   const closeSession = (): void => {
     signOut()
@@ -49,6 +52,11 @@ export default function Home ({ children }: { children: React.ReactNode }): JSX.
     }
   ]
 
+  const searchUsers = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault()
+    router.push(`/dash/search?q=${search}`)
+  }
+
   return (
     <div className='h-screen w-full max-h-screen min-h-screen flex fixed'>
       <div className='hidden border-r border-gray-700 lg:block bg-gray-900/40'>
@@ -79,13 +87,15 @@ export default function Home ({ children }: { children: React.ReactNode }): JSX.
           <Logo className='h-12 w-12 lg:hidden' />
           <span className='sr-only'>Inicio</span>
           <div className='w-full flex-1'>
-            <form>
+            <form onSubmit={searchUsers}>
               <div className='relative'>
                 <SearchIcon className='absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400' />
                 <Input
                   className='w-full bg-white shadow-none appearance-none pl-8 md:w-2/3 lg:w-1/3 dark:bg-gray-950'
                   placeholder='Buscar devs...'
                   type='search'
+                  onChange={(e) => setSearch(e.target.value)}
+                  value={search}
                 />
               </div>
             </form>

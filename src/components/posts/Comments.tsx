@@ -41,8 +41,7 @@ export default function Comments ({ post, setOpen, sendLike, setPosts }: Comment
         setPosts((prev: Post[]) => prev.map(p => {
           if (p._id === newPost._id) return newPost
           return p
-        })
-        )
+        }))
         setComment('')
       })
       .catch(() => toast.error('Error creando comentario'))
@@ -138,6 +137,7 @@ export default function Comments ({ post, setOpen, sendLike, setPosts }: Comment
               className='w-full px-4 py-2 rounded-lg border border-gray-700 dark:border-gray-600'
               placeholder='Escribe un comentario...'
               onChange={(e) => setComment(e.target.value)}
+              value={comment}
               type='text'
               disabled={loading}
             />
