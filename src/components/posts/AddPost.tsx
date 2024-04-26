@@ -84,7 +84,7 @@ export default function AddPost ({ setPost }: { setPost: (val: any) => void }): 
               onChange={e => setContent(e.target.value)}
               value={content}
             />
-            <label className='hover:opacity-75 cursor-pointer transition-opacity'>
+            <label className='hover:opacity-75 cursor-pointer transition-opacity upload-image'>
               <ImageIcon className='w-6 h-6' />
               <input type='file' onChange={handleImage} hidden accept='image/*' />
             </label>

@@ -109,6 +109,7 @@ export default function Home ({ children }: { children: React.ReactNode }): JSX.
                 className='rounded-full border border-gray-200 w-8 h-8 dark:border-gray-800'
                 size='icon'
                 variant='ghost'
+                name='user-options'
               >
                 <img
                   alt='Avatar'
